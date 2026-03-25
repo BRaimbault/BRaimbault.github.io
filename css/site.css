@@ -393,6 +393,8 @@ body {
     padding: 20px 16px 16px;
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -450,7 +452,10 @@ body {
 /* ---- Card description ---- */
 .card-description {
     font-size: .85em;
-    height: 11.1em;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     color: var(--text-2);
     line-height: 1.65;
@@ -461,7 +466,7 @@ body {
 .card-description a:hover       { text-decoration: underline; }
 
 /* ---- Card badges ---- */
-.card-badges { height: 6em; }
+.card-badges { margin-top: auto; padding-top: 10px; }
 
 /* ---- Badges ---- */
 .badge-tech {
@@ -569,10 +574,12 @@ body {
    ================================================================ */
 @media (min-width: 576px) and (max-width: 767px) {
     .project-card { flex: 0 0 50%; max-width: 50%; }
+    .card-description { -webkit-line-clamp: 10; line-clamp: 10; }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
     .project-card { flex: 0 0 33.333%; max-width: 33.333%; }
+    .card-description { -webkit-line-clamp: 8; line-clamp: 8; }
 }
 
 @media (max-width: 575px) {
@@ -593,7 +600,7 @@ body {
 
     /* Single-column cards: drop fixed heights, let content flow naturally */
     .project-card h5       { height: auto; margin-bottom: 6px; }
-    .card-description      { height: auto; overflow: visible; }
+    .card-description      { -webkit-line-clamp: unset; line-clamp: unset; display: block; overflow: visible; }
     .card-badges           { height: auto; }
 
     .project-card-inner img { width: 180px; height: 180px; }
@@ -652,8 +659,8 @@ body {
     .card-description {
         grid-column: 2;
         grid-row: 3;
-        height: auto;
-        max-height: 5em;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
         overflow: hidden;
         margin-bottom: 6px;
     }
