@@ -1,27 +1,109 @@
-h1 {
-    font-size:4em;
+.spacer {
+    margin-top: 30px;
 }
 
-.titledesc{
-    font-size:1.4em;
+.spacer-down {
+    margin-bottom: 30px;
+}
+
+.btn-outline {
+    color: #333;
+    /* text */
+    border: 1px solid #333;
+    background-color: transparent;
+}
+
+.btn-outline:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.card-description {
+    font-size: .9em;
+    height: 10.5em;
+    overflow: hidden;
+}
+
+.card-badges {
+    height: 6em;
+}
+
+.project-card h5 {
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+}
+
+#earlierWork.collapse {
+    transition: none !important;
+}
+
+.badge-tech {
+    background-color: #4a90d9;
+    color: #fff;
+    margin-right: 2px;
+    cursor: pointer;
+}
+
+.badge-thematic {
+    background-color: #5a9e6f;
+    color: #fff;
+    margin-right: 2px;
+    cursor: pointer;
+}
+
+.badge-role {
+    background-color: #b07d3a;
+    color: #fff;
+    margin-right: 2px;
+    cursor: pointer;
+}
+
+.filter-role.active {
+    background-color: #b07d3a;
+    border-color: #b07d3a;
+    color: #fff;
+}
+
+.filter-btn {
+    font-size: .8em;
+    border: 1px solid #ccc;
+    background-color: transparent;
+    color: #555;
+}
+
+.filter-btn:hover {
+    border-color: #999;
+    color: #333;
+}
+
+#clearFilters {
     color: #999;
 }
 
-.title{
-    font-size:2.5em;
+.filter-tech.active {
+    background-color: #4a90d9;
+    border-color: #4a90d9;
+    color: #fff;
 }
 
-.spacer {
-    margin-top:30px;
+.filter-thematic.active {
+    background-color: #5a9e6f;
+    border-color: #5a9e6f;
+    color: #fff;
 }
 
-p {
-    text-align: justify;
-    text-justify: inter-word;
-}
-
-.border{
-    border-width:1px;
-    border-style: solid;
-    border-color: #000;
+.filter-btn.active::after,
+.badge-tech.active::after,
+.badge-thematic.active::after,
+.badge-role.active::after {
+    content: ' ×';
+    opacity: 0.75;
 }
