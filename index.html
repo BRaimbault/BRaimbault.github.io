@@ -12,39 +12,46 @@
 </head>
 
 <body>
+
+  <div id="stickyHeader">
+    <div class="sticky-inner">
+      <span class="sticky-name">Bruno Raimbault</span>
+      <span class="sticky-sep"></span>
+      <span class="sticky-role">Geospatial & Health Data Systems Engineer</span>
+    </div>
+  </div>
+
   <div class="container">
 
     <!-- Header -->
-    <div class="row text-center">
-      <div class="col-12 spacer">
+    <div class="row site-header">
+      <div class="col-12">
+        <button id="themeToggle" aria-label="Toggle color mode"></button>
         <h2>Bruno Raimbault</h2>
         <h4>Geospatial & Health Data Systems Engineer</h4>
-      </div>
-      <div class="col-12 mb-2">
-        <p class="mb-1">
+        <p class="header-description">
           I design and build geospatial and health information systems for global health and humanitarian
-          contexts.<br>
-          Specialised in DHIS2, GIS, and climate & environmental health analytics.
+          contexts. Specialised in DHIS2, GIS, and climate & environmental health analytics.
         </p>
-      </div>
-      <div class="col-12 mb-2 d-flex justify-content-center">
-        <a class="btn btn-outline mr-2" href="mailto:raimbault.bruno@gmail.com">Email</a>
-        <a class="btn btn-outline mr-2" href="https://github.com/BRaimbault" target="_blank">GitHub</a>
-        <a class="btn btn-outline" href="https://www.linkedin.com/in/braimbault" target="_blank">LinkedIn</a>
-      </div>
-      <div class="col-12">
-        <p>Selected projects below.</p>
+        <div class="d-flex header-links">
+          <a class="btn btn-outline mr-2" href="mailto:raimbault.bruno@gmail.com">Email</a>
+          <a class="btn btn-outline mr-2" href="https://github.com/BRaimbault" target="_blank">GitHub</a>
+          <a class="btn btn-outline" href="https://www.linkedin.com/in/braimbault" target="_blank">LinkedIn</a>
+        </div>
       </div>
     </div>
 
     <!-- Filters -->
     <div class="row justify-content-center" id="filters">
-      <div class="col-12 text-center">
-        <div id="techFilters" class="d-inline-block"></div>
-        <div id="thematicFilters" class="d-inline-block"></div>
-        <div id="roleFilters" class="d-inline-block"></div>
+      <div class="col-12 text-center mb-1">
+        <button id="filterToggle" class="btn btn-sm">Filter</button>
       </div>
-      <button id="clearFilters" class="btn btn-sm mr-1 mb-1 d-none">✕ clear all</button>
+      <div class="col-12 text-center collapse" id="filterChips">
+        <div id="techFilters" class="d-block mb-1"></div>
+        <div id="thematicFilters" class="d-block mb-1"></div>
+        <div id="roleFilters" class="d-block mb-1"></div>
+        <button id="clearFilters" class="btn btn-sm mr-1 mb-1 d-none">✕ Clear All</button>
+      </div>
     </div>
 
     <!-- Featured Projects -->
@@ -52,7 +59,7 @@
 
     <!-- Toggle Button -->
     <div class="row justify-content-center spacer spacer-down">
-      <a id="toggleBtn" class="btn btn-outline-secondary spacer" data-toggle="collapse" href="#earlierWork">
+      <a id="toggleBtn" class="btn spacer" data-toggle="collapse" href="#earlierWork">
         Show earlier work
       </a>
     </div>
@@ -63,14 +70,32 @@
     </div>
 
   </div>
-</body>
 
 <script>
   $(document).ready(function () {
 
-    const TECH_BADGES = ['R', 'Python', 'JS', 'VBA', 'Node', 'SQL', 'NoSQL', 'GIS'];
+    // --------------- Sticky Header ----------------
+    const $stickyHeader = $('#stickyHeader');
+    $(window).on('scroll', function () {
+      $stickyHeader.toggleClass('visible', $(this).scrollTop() > $('.site-header').outerHeight(true));
+    });
+
+    // --------------- Theme Toggle ----------------
+    const $html = $('html');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) $html.attr('data-theme', savedTheme);
+
+    $('#themeToggle').on('click', function () {
+      const current = $html.attr('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const next = current === 'dark' ? 'light' : 'dark';
+      $html.attr('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    const TECH_BADGES = ['GIS', 'JS', 'Python', 'R', 'VBA', 'Node', 'SQL', 'NoSQL'];
     const THEMATIC_BADGES = ['Public Health', 'Environmental Health', 'Reproductive Health', 'Information Management', 'Hydrology'];
-    const ROLE_BADGES = ['Field Work', 'Project Management'];
+    const ROLE_BADGES = ['Project Management', 'Research', 'Field Work', 'Teaching'];
 
     // --------------- Project Card Template ----------------
     function createProjectCard(project) {
@@ -79,22 +104,24 @@
       const roleAttr = (project.role || []).join('|');
       return `
         <div class="col-sm-3 spacer project-card" data-tech="${techAttr}" data-thematic="${thematicAttr}" data-role="${roleAttr}">
-          <h5 class="text-center">${project.title}</h5>
-          <div class="text-center">
-            ${project.titleLink ? `<a href="${project.titleLink.url}" target="_blank" class="btn btn-sm btn-dark" style="font-size:.75em">${project.titleLink.text}</a>` : ''}
-          </div>
+          <div class="project-card-inner">
+            <h5 class="text-center">${project.title}</h5>
+            <div class="text-center">
+              ${project.titleLink ? `<a href="${project.titleLink.url}" target="_blank" class="btn btn-sm btn-dark">${project.titleLink.text}</a>` : ''}
+            </div>
 
-          ${project.url ? `
-            <a href="${project.url}" target="_blank">
-              ${project.image ? `<img src="${project.image}" class="d-block mx-auto border spacer" data-toggle="tooltip" data-placement="bottom" title="Click to visit project page" />` : ''}
-            </a>` : ''}
+            ${project.url ? `
+              <a href="${project.url}" target="_blank" class="stretched-link">
+                ${project.image ? `<img src="${project.image}" alt="${project.title}" />` : ''}
+              </a>` : ''}
 
-          <p class="spacer card-description">${project.description}</p>
+            <p class="card-description">${project.description}</p>
 
-          <div class="card-badges">
-            ${project.tech && project.tech.length > 0 ? `<p class="mb-1">${project.tech.map(b => `<span class="badge badge-tech">${b}</span>`).join(' ')}</p>` : ''}
-            ${project.thematic && project.thematic.length > 0 ? `<p class="mb-1">${project.thematic.map(b => `<span class="badge badge-thematic">${b}</span>`).join(' ')}</p>` : ''}
-            ${project.role && project.role.length > 0 ? `<p class="mb-0">${project.role.map(b => `<span class="badge badge-role">${b}</span>`).join(' ')}</p>` : ''}
+            <div class="card-badges">
+              ${project.tech && project.tech.length > 0 ? `<p class="mb-1">${project.tech.map(b => `<span class="badge badge-tech">${b}</span>`).join(' ')}</p>` : ''}
+              ${project.thematic && project.thematic.length > 0 ? `<p class="mb-1">${project.thematic.map(b => `<span class="badge badge-thematic">${b}</span>`).join(' ')}</p>` : ''}
+              ${project.role && project.role.length > 0 ? `<p class="mb-0">${project.role.map(b => `<span class="badge badge-role">${b}</span>`).join(' ')}</p>` : ''}
+            </div>
           </div>
         </div>
         `;
@@ -105,7 +132,7 @@
       {
         title: 'DHIS2 Maps App',
         titleLink: { url: 'https://dhis2.org/', text: '@UiO' },
-        url: 'https://apps.dhis2.org/app/ad3a9d16-e56f-48a9-a9ed-b906d5646e74',
+        url: 'https://play.im.dhis2.org/dev-2-42/apps/maps',
         image: 'thumbnails/dhis2_maps.png',
         description: 'Lead developer of the DHIS2 Core Maps App, the primary geospatial analysis tool used by national health programs and humanitarian agencies across 100+ countries. <a href="https://docs.dhis2.org/en/use/user-guides/dhis-core-version-master/analysing-data/maps.html" target="_blank">Docs</a>.',
         tech: ['JS', 'GIS'],
@@ -120,25 +147,27 @@
         description: 'Supported the organisation and delivered the annual GIS Programming for Environmental Health Research course, covering spatial data processing and exposure assessment methods.',
         tech: ['Python', 'R', 'GIS'],
         thematic: ['Public Health', 'Environmental Health'],
-        role: ['Project Management']
+        role: ['Teaching', 'Project Management']
       },
       {
         title: 'BiSC',
         titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
         url: 'http://www.biscproject.org',
-        image: 'https://projectebisc.org/wp-content/uploads/2018/12/BISC_heading-1.png',
+        image: 'thumbnails/isg_bisc.png',
         description: 'Spatial data scientist on the BiSC cohort study, characterising prenatal environmental exposures (air pollution, green spaces, noise) for 1,200 pregnancies across Barcelona hospitals. <a href="https://www.healtheffects.org/publication/traffic-related-air-pollution-and-birth-weight-roles-noise-placental-function-green" target="_blank">Article</a>.',
         tech: ['Python', 'R', 'SQL', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health']
+        thematic: ['Public Health', 'Environmental Health'],
+        role: ['Research']
       },
       {
         title: 'Equal-Life',
         titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
         url: 'https://www.equal-life.eu',
-        image: 'https://www.isglobal.org/documents/10179/5872775/Project+Equal-Life.jpg/c3f60407-24cb-4a50-5431-2eecfd26a673?t=1773326198342',
+        image: 'thumbnails/isg_eql.png',
         description: 'Spatial data scientist on this EU-funded exposome project, building and harmonising environmental exposure datasets across 15+ European birth cohorts and 500,000+ participants. <a href="https://journals.lww.com/environepidem/fulltext/2022/02000/Early_environmental_quality_and_life_course_mental.2.aspx" target="_blank">Article</a>.',
         tech: ['Python', 'R', 'SQL', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health']
+        thematic: ['Public Health', 'Environmental Health'],
+        role: ['Research']
       },
       {
         title: 'Air Pollution Modelling',
@@ -147,17 +176,18 @@
         image: 'thumbnails/jhu_ia.png',
         description: 'Final project built as part of JHU\'s Master of Spatial Analysis for Public Health, using kriging-based spatial models to estimate PM2.5 exposure across California.',
         tech: ['R', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health']
+        thematic: ['Public Health', 'Environmental Health'],
+        role: ['Research']
       },
       {
-        title: 'Connecting w/ Sara',
+        title: 'Connecting with Sara',
         titleLink: { url: 'https://www.psi.org/', text: '@PSI' },
         url: 'https://www.psi.org/saras-journey-to-care/',
         image: 'thumbnails/psi_cws.png',
         description: 'Product owner and lead engineer of a DHIS2-integrated mobile health ecosystem, deployed in 15 countries for 2,000+ health workers and 100,000+ patients monthly. <a href="https://media.psi.org/wp-content/uploads/2020/02/31010924/Connecting-with-Sara-Brief-FINAL-Sept-2018-v2.pdf" target="_blank">Brief</a>.',
         tech: ['JS', 'Node', 'SQL', 'NoSQL'],
         thematic: ['Public Health', 'Reproductive Health'],
-        role: ['Field Work', 'Project Management']
+        role: ['Project Management', 'Field Work']
       },
       {
         title: 'DHIS2 New Start App',
@@ -167,7 +197,7 @@
         description: 'Led design, development, and field deployment of a DHIS2 app for HIV testing campaigns in Lesotho, enabling patient data collection and linkage-to-care follow-up.',
         tech: ['JS'],
         thematic: ['Public Health', 'Reproductive Health'],
-        role: ['Field Work', 'Project Management']
+        role: ['Project Management', 'Field Work']
       },
       {
         title: 'MSF Dashboards',
@@ -228,7 +258,7 @@
         description: 'Estimated irrigation water use in the Kairouan Plain, Tunisia, using high-resolution NDVI satellite time series with field calibration, as part of the SUDMED project. <a href="https://www.mdpi.com/2072-4292/7/10/13005#" target="_blank">Article</a>.',
         tech: ['R', 'GIS'],
         thematic: ['Hydrology'],
-        role: ['Field Work']
+        role: ['Field Work', 'Research']
       },
       {
         title: 'Landslides Modelling',
@@ -237,7 +267,8 @@
         image: 'thumbnails/brgm.png',
         description: 'Modelled hydrological triggers of landslide hazard and mapped its evolution under IPCC climate scenarios in the French Alps, contributing to the ALICE software (EU FP7 Safeland).',
         tech: ['VBA', 'Python', 'GIS'],
-        thematic: ['Hydrology']
+        thematic: ['Hydrology'],
+        role: ['Research']
       },
       {
         title: 'Hydrological Analysis',
@@ -247,7 +278,7 @@
         description: 'Developed modules for Hydraccess, an IRD hydrological data analysis tool, while conducting field campaigns and staff training in Chile and Peru (HyBAm project).',
         tech: ['VBA', 'SQL'],
         thematic: ['Hydrology'],
-        role: ['Field Work']
+        role: ['Field Work', 'Research'],
       }
     ];
 
@@ -267,6 +298,20 @@
     const activeThematic = new Set();
     const activeRole = new Set();
     let filterTriggeredOpen = false;
+    let userExpandedFilters = false;
+    const $filterChips = $('#filterChips');
+    const $filterToggle = $('#filterToggle');
+
+    function setFilterChipsOpen(open) {
+      if (open) { $filterChips.collapse('show'); $filterToggle.addClass('active'); }
+      else { $filterChips.collapse('hide'); $filterToggle.removeClass('active'); }
+    }
+
+    $filterToggle.on('click', function () {
+      const opening = !$filterChips.hasClass('show');
+      userExpandedFilters = opening;
+      setFilterChipsOpen(opening);
+    });
 
     function projectMatches(card) {
       const cardTech = $(card).data('tech') ? String($(card).data('tech')).split('|') : [];
@@ -286,6 +331,8 @@
       const filtersActive = activeTech.size > 0 || activeThematic.size > 0 || activeRole.size > 0;
       const anyEarlierMatches = $('#earlierProjects .project-card').toArray().some(projectMatches);
       if (filtersActive && anyEarlierMatches) { filterTriggeredOpen = true; $collapse.collapse('show'); }
+      if (filtersActive) { setFilterChipsOpen(true); }
+      else if (!userExpandedFilters) { setFilterChipsOpen(false); }
       $('#clearFilters').toggleClass('d-none', !filtersActive);
     }
 
@@ -317,28 +364,22 @@
     const $earlierContainer = $('#earlierProjects');
     earlierProjects.forEach(proj => $earlierContainer.append(createProjectCard(proj)));
 
-    // Activate tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
     // --------------- Toggle Button ----------------
     const $btn = $('#toggleBtn');
     const $collapse = $('#earlierWork');
 
     $collapse.on('shown.bs.collapse', function () {
-      $btn.text('Hide earlier work').removeClass('btn-outline-secondary').addClass('btn-secondary');
-      history.replaceState(null, '', '#earlier-work');
+      $btn.text('Hide earlier work').addClass('open');
       if (!filterTriggeredOpen) { window.scrollTo(0, $btn.offset().top - 20); }
       filterTriggeredOpen = false;
     });
 
     $collapse.on('hide.bs.collapse', function () {
-      $btn.text('Show earlier work').removeClass('btn-secondary').addClass('btn-outline-secondary');
-      history.replaceState(null, '', window.location.pathname);
+      $btn.text('Show earlier work').removeClass('open');
     });
-
-    if (window.location.hash === '#earlier-work') { $collapse.collapse('show'); }
 
   });
 </script>
 
+</body>
 </html>
