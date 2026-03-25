@@ -37,7 +37,8 @@
         <div class="d-flex header-links">
           <a class="btn btn-outline mr-2" href="mailto:raimbault.bruno@gmail.com">Email</a>
           <a class="btn btn-outline mr-2" href="https://github.com/BRaimbault" target="_blank">GitHub</a>
-          <a class="btn btn-outline" href="https://www.linkedin.com/in/braimbault" target="_blank">LinkedIn</a>
+          <a class="btn btn-outline mr-2" href="https://www.linkedin.com/in/braimbault" target="_blank">LinkedIn</a>
+          <a class="btn btn-outline" href="https://scholar.google.com/citations?user=3i7GPQ8AAAAJ&hl=en" target="_blank">Scholar</a>
         </div>
       </div>
     </div>
@@ -72,60 +73,60 @@
 
   </div>
 
-<script>
-  $(document).ready(function () {
+  <script>
+    $(document).ready(function () {
 
-    // --------------- Sticky Header ----------------
-    const $stickyHeader = $('#stickyHeader');
-    const stickyThreshold = $('.site-header').outerHeight() || 120;
-    $(window).on('scroll', function () {
-      $stickyHeader.toggleClass('visible', $(this).scrollTop() > stickyThreshold);
-    });
+      // --------------- Sticky Header ----------------
+      const $stickyHeader = $('#stickyHeader');
+      const stickyThreshold = $('.site-header').outerHeight() || 120;
+      $(window).on('scroll', function () {
+        $stickyHeader.toggleClass('visible', $(this).scrollTop() > stickyThreshold);
+      });
 
-    // --------------- Theme Toggle ----------------
-    const $html = $('html');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const savedTheme = localStorage.getItem('theme');
+      // --------------- Theme Toggle ----------------
+      const $html = $('html');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+      const savedTheme = localStorage.getItem('theme');
 
-    // Only apply saved theme if it overrides the system preference; otherwise clear it
-    if (savedTheme) {
-      const systemTheme = systemDark.matches ? 'dark' : 'light';
-      if (savedTheme !== systemTheme) {
-        $html.attr('data-theme', savedTheme);
-      } else {
-        localStorage.removeItem('theme');
+      // Only apply saved theme if it overrides the system preference; otherwise clear it
+      if (savedTheme) {
+        const systemTheme = systemDark.matches ? 'dark' : 'light';
+        if (savedTheme !== systemTheme) {
+          $html.attr('data-theme', savedTheme);
+        } else {
+          localStorage.removeItem('theme');
+        }
       }
-    }
 
-    $('#themeToggle').on('click', function () {
-      const current = $html.attr('data-theme') ||
-        (systemDark.matches ? 'dark' : 'light');
-      const next = current === 'dark' ? 'light' : 'dark';
-      $html.attr('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
+      $('#themeToggle').on('click', function () {
+        const current = $html.attr('data-theme') ||
+          (systemDark.matches ? 'dark' : 'light');
+        const next = current === 'dark' ? 'light' : 'dark';
+        $html.attr('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
 
-    // If system preference changes (e.g. phone auto dark mode at sunset),
-    // clear any manual override that now matches it
-    systemDark.addEventListener('change', function (e) {
-      const stored = localStorage.getItem('theme');
-      const newSystem = e.matches ? 'dark' : 'light';
-      if (stored === newSystem) {
-        localStorage.removeItem('theme');
-        $html.removeAttr('data-theme');
-      }
-    });
+      // If system preference changes (e.g. phone auto dark mode at sunset),
+      // clear any manual override that now matches it
+      systemDark.addEventListener('change', function (e) {
+        const stored = localStorage.getItem('theme');
+        const newSystem = e.matches ? 'dark' : 'light';
+        if (stored === newSystem) {
+          localStorage.removeItem('theme');
+          $html.removeAttr('data-theme');
+        }
+      });
 
-    const TECH_BADGES = ['GIS', 'JS', 'Python', 'R', 'VBA', 'Node', 'SQL', 'NoSQL'];
-    const THEMATIC_BADGES = ['Public Health', 'Environmental Health', 'Reproductive Health', 'Information Management', 'Hydrology'];
-    const ROLE_BADGES = ['Project Management', 'Research', 'Field Work', 'Teaching'];
+      const TECH_BADGES = ['GIS', 'JS', 'Python', 'R', 'VBA', 'Node', 'SQL', 'NoSQL'];
+      const THEMATIC_BADGES = ['Public Health', 'Environmental Health', 'Reproductive Health', 'Information Management', 'Hydrology'];
+      const ROLE_BADGES = ['Project Management', 'Research', 'Field Work', 'Teaching'];
 
-    // --------------- Project Card Template ----------------
-    function createProjectCard(project) {
-      const techAttr = (project.tech || []).join('|');
-      const thematicAttr = (project.thematic || []).join('|');
-      const roleAttr = (project.role || []).join('|');
-      return `
+      // --------------- Project Card Template ----------------
+      function createProjectCard(project) {
+        const techAttr = (project.tech || []).join('|');
+        const thematicAttr = (project.thematic || []).join('|');
+        const roleAttr = (project.role || []).join('|');
+        return `
         <div class="col-sm-3 spacer project-card" data-tech="${techAttr}" data-thematic="${thematicAttr}" data-role="${roleAttr}">
           <div class="project-card-inner">
             <h5 class="text-center">${project.title}</h5>
@@ -148,261 +149,262 @@
           </div>
         </div>
         `;
-    }
-
-    // --------------- Projects Data ----------------
-    const featuredProjects = [
-      {
-        title: 'DHIS2 Maps App',
-        titleLink: { url: 'https://dhis2.org/', text: '@UiO' },
-        url: 'https://play.im.dhis2.org/dev-2-42/apps/maps',
-        image: 'thumbnails/dhis2_maps.png',
-        description: 'Lead developer of the Maps App, the core geospatial module of DHIS2, a health information system used by national health programs and humanitarian agencies across 100+ countries. <a href="https://docs.dhis2.org/en/use/user-guides/dhis-core-version-master/analysing-data/maps.html" target="_blank">Docs</a>.',
-        tech: ['JS', 'GIS'],
-        thematic: ['Public Health', 'Information Management'],
-        role: ['Project Management']
-      },
-      {
-        title: 'GIS Dev Course',
-        titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
-        url: 'https://www.isglobal.org/en/-/gis-for-exposure-assessment-in-environmental-health-research',
-        image: 'thumbnails/isg_course.png',
-        description: 'Supported the organisation and delivered the annual GIS Programming for Environmental Health Research course, covering spatial data processing and exposure assessment methods.',
-        tech: ['Python', 'R', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health'],
-        role: ['Teaching', 'Project Management']
-      },
-      {
-        title: 'BiSC',
-        titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
-        url: 'http://www.biscproject.org',
-        image: 'thumbnails/isg_bisc.png',
-        description: 'Spatial data scientist on the BiSC cohort study, characterising prenatal environmental exposures (air pollution, green spaces, noise) for 1,200 pregnancies across Barcelona hospitals. <a href="https://www.healtheffects.org/publication/traffic-related-air-pollution-and-birth-weight-roles-noise-placental-function-green" target="_blank">Article</a>.',
-        tech: ['Python', 'R', 'SQL', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health'],
-        role: ['Research']
-      },
-      {
-        title: 'Equal-Life',
-        titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
-        url: 'https://www.equal-life.eu',
-        image: 'thumbnails/isg_eql.png',
-        description: 'Spatial data scientist on this EU-funded exposome project, building and harmonising environmental exposure datasets across 15+ European birth cohorts and 500,000+ participants. <a href="https://journals.lww.com/environepidem/fulltext/2022/02000/Early_environmental_quality_and_life_course_mental.2.aspx" target="_blank">Article</a>.',
-        tech: ['Python', 'R', 'SQL', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health'],
-        role: ['Research']
-      },
-      {
-        title: 'Air Pollution Modelling',
-        titleLink: { url: 'https://publichealth.jhu.edu/academics/mas-in-spatial-analysis-for-public-health', text: '@JHU' },
-        url: 'https://braimbault.github.io/2020-JHU-IA/',
-        image: 'thumbnails/jhu_ia.png',
-        description: 'Final project built as part of JHU\'s Master of Spatial Analysis for Public Health, using kriging-based spatial models to estimate PM2.5 exposure across California.',
-        tech: ['R', 'GIS'],
-        thematic: ['Public Health', 'Environmental Health'],
-        role: ['Research']
-      },
-      {
-        title: 'Connecting with Sara',
-        titleLink: { url: 'https://www.psi.org/', text: '@PSI' },
-        url: 'https://www.psi.org/saras-journey-to-care/',
-        image: 'thumbnails/psi_cws.png',
-        description: 'Product owner and lead engineer of a DHIS2-integrated mobile health ecosystem, deployed in 15 countries for 2,000+ health workers and 100,000+ patients monthly. <a href="https://media.psi.org/wp-content/uploads/2020/02/31010924/Connecting-with-Sara-Brief-FINAL-Sept-2018-v2.pdf" target="_blank">Brief</a>.',
-        tech: ['JS', 'Node', 'SQL', 'NoSQL'],
-        thematic: ['Public Health', 'Reproductive Health'],
-        role: ['Project Management', 'Field Work']
-      },
-      {
-        title: 'DHIS2 New Start App',
-        titleLink: { url: 'https://www.psi.org/', text: '@PSI' },
-        url: 'https://github.com/psi-mis/lesotho',
-        image: 'thumbnails/psi_ns.png',
-        description: 'Led design, development, and field deployment of a DHIS2 app for HIV testing campaigns in Lesotho, enabling patient data collection and linkage-to-care follow-up.',
-        tech: ['JS'],
-        thematic: ['Public Health', 'Reproductive Health'],
-        role: ['Project Management', 'Field Work']
-      },
-      {
-        title: 'MSF Dashboards',
-        titleLink: { url: 'http://www.msf.org.uk/', text: '@MSF' },
-        url: 'https://msf-uk.github.io/MSF-Dashboard/ver_demos/cfg_dhmt-tonkolili/',
-        image: 'thumbnails/msf_db.png',
-        description: 'Designed, developed, and field-piloted a modular disease surveillance dashboard for MSF, covering time/place/person visualisation. Deployed in Sierra Leone and DRC. <a href="https://f1000research.com/slides/5-922" target="_blank">Slides</a>.',
-        tech: ['JS', 'GIS'],
-        thematic: ['Public Health'],
-        role: ['Field Work']
-      },
-    ];
-
-    const earlierProjects = [
-      {
-        title: 'DHIS2 Dictionary App',
-        titleLink: { url: 'https://www.msf.es/', text: '@MSF' },
-        url: 'https://github.com/msf-ocba/HMIS-Dictionary',
-        image: 'thumbnails/msf_dict.png',
-        description: 'DHIS2 app built for MSF field teams to look up health indicator definitions and metadata, reducing data entry errors across 15 countries and 60 projects.',
-        tech: ['JS'],
-        thematic: ['Public Health', 'Information Management'],
-        role: ['Field Work']
-      },
-      {
-        title: 'Mapfolios',
-        titleLink: { url: 'http://www.redcross.org.uk/', text: '@BritishRedCross' },
-        url: 'https://sheltercluster.org/myanmar-floods-2015/pages/tables-and-maps',
-        image: 'thumbnails/rc_mf.png',
-        description: 'Static map portfolios produced for the Ethiopia Red Cross Drought Emergency and the Global Shelter Cluster\'s Myanmar Floods Response.',
-        tech: ['JS', 'GIS'],
-        thematic: ['Information Management'],
-        role: ['Field Work']
-      },
-      {
-        title: 'Interactive Reports',
-        titleLink: { url: 'http://www.redcross.org.uk/', text: '@BritishRedCross' },
-        url: 'https://braimbault.github.io/dc_ERCS-DHIS/',
-        image: 'thumbnails/rc_ir.png',
-        description: 'Interactive situational reports for the Nepal and Ethiopia Red Cross, combining health surveillance data with dynamic maps and charts.',
-        tech: ['JS', 'GIS'],
-        thematic: ['Information Management']
-      },
-      {
-        title: 'Open Humanitarian Data',
-        titleLink: { url: 'https://data.humdata.org/', text: 'HDX data' },
-        url: 'https://braimbault.github.io/d3_WSS_explore/',
-        image: 'thumbnails/hdx_ohd.png',
-        description: 'Personal exploration of HDX open datasets, building interactive dashboards to visualise water, sanitation, and hygiene indicators across humanitarian contexts.',
-        tech: ['JS', 'GIS'],
-        thematic: ['Information Management']
-      },
-      {
-        title: 'Irrigation Monitoring',
-        titleLink: { url: 'https://en.ird.fr/', text: '@IRD' },
-        url: 'https://www.cesbio.cnrs.fr/la-recherche/activites/observatoires/tunisie-le-projet-merguellil/',
-        image: 'thumbnails/ird_ndvi.png',
-        description: 'Estimated irrigation water use in the Kairouan Plain, Tunisia, using high-resolution NDVI satellite time series with field calibration, as part of the SUDMED project. <a href="https://www.mdpi.com/2072-4292/7/10/13005#" target="_blank">Article</a>.',
-        tech: ['R', 'GIS'],
-        thematic: ['Hydrology'],
-        role: ['Field Work', 'Research']
-      },
-      {
-        title: 'Landslides Modelling',
-        titleLink: { url: 'https://www.brgm.fr/en/', text: '@BRGM' },
-        url: 'https://www.brgm.fr/en/reference-completed-project/safeland-mitigating-impacts-global-changes-land-movement-risks',
-        image: 'thumbnails/brgm.png',
-        description: 'Modelled hydrological triggers of landslide hazard and mapped its evolution under IPCC climate scenarios in the French Alps, contributing to the ALICE software (EU FP7 Safeland).',
-        tech: ['VBA', 'Python', 'GIS'],
-        thematic: ['Hydrology'],
-        role: ['Research']
-      },
-      {
-        title: 'Hydrological Analysis',
-        titleLink: { url: 'https://en.ird.fr/', text: '@IRD' },
-        url: 'https://hybam.obs-mip.fr/hydraccess/',
-        image: 'thumbnails/ird_adcp.png',
-        description: 'Developed modules for Hydraccess, an IRD hydrological data analysis tool, while conducting field campaigns and staff training in Chile and Peru (HyBAm project).',
-        tech: ['VBA', 'SQL'],
-        thematic: ['Hydrology'],
-        role: ['Field Work', 'Research'],
       }
-    ];
 
-    // --------------- Render Filter Bar ----------------
-    TECH_BADGES.forEach(b => {
-      $('#techFilters').append(`<button class="btn btn-sm filter-btn filter-tech mr-1 mb-1" data-filter="${b}" data-type="tech">${b}</button>`);
-    });
-    THEMATIC_BADGES.forEach(b => {
-      $('#thematicFilters').append(`<button class="btn btn-sm filter-btn filter-thematic mr-1 mb-1" data-filter="${b}" data-type="thematic">${b}</button>`);
-    });
-    ROLE_BADGES.forEach(b => {
-      $('#roleFilters').append(`<button class="btn btn-sm filter-btn filter-role mr-1 mb-1" data-filter="${b}" data-type="role">${b}</button>`);
-    });
+      // --------------- Projects Data ----------------
+      const featuredProjects = [
+        {
+          title: 'DHIS2 Maps App',
+          titleLink: { url: 'https://dhis2.org/', text: '@UiO' },
+          url: 'https://play.im.dhis2.org/dev-2-42/apps/maps',
+          image: 'thumbnails/dhis2_maps.png',
+          description: 'Lead developer of the Maps App, the core geospatial module of DHIS2: health information system used by national health programs and humanitarian agencies across 100+ countries. <a href="https://docs.dhis2.org/en/use/user-guides/dhis-core-version-master/analysing-data/maps.html" target="_blank">Docs</a>.',
+          tech: ['JS', 'GIS'],
+          thematic: ['Public Health', 'Information Management'],
+          role: ['Project Management']
+        },
+        {
+          title: 'GIS Dev Course',
+          titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
+          url: 'https://www.isglobal.org/en/-/gis-for-exposure-assessment-in-environmental-health-research',
+          image: 'thumbnails/isg_course.png',
+          description: 'Supported the organisation and delivered the annual GIS Programming for Environmental Health Research course, covering spatial data processing and exposure assessment methods.',
+          tech: ['Python', 'R', 'GIS'],
+          thematic: ['Public Health', 'Environmental Health'],
+          role: ['Teaching', 'Project Management']
+        },
+        {
+          title: 'BiSC',
+          titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
+          url: 'http://www.biscproject.org',
+          image: 'thumbnails/isg_bisc.png',
+          description: 'Spatial data scientist on the BiSC cohort study, characterising prenatal environmental exposures (air pollution, green spaces, noise) for 1,200 pregnancies across Barcelona hospitals. <a href="https://www.healtheffects.org/publication/traffic-related-air-pollution-and-birth-weight-roles-noise-placental-function-green" target="_blank">Report</a>.',
+          tech: ['Python', 'R', 'SQL', 'GIS'],
+          thematic: ['Public Health', 'Environmental Health'],
+          role: ['Research']
+        },
+        {
+          title: 'Equal-Life',
+          titleLink: { url: 'https://www.isglobal.org/en', text: '@ISGlobal' },
+          url: 'https://www.equal-life.eu',
+          image: 'thumbnails/isg_eql.png',
+          description: 'Spatial data scientist on this EU-funded exposome project, building and harmonising environmental exposure datasets across 15+ European birth cohorts and 500,000+ participants. <a href="https://journals.lww.com/environepidem/fulltext/2022/02000/Early_environmental_quality_and_life_course_mental.2.aspx" target="_blank">Article</a>.',
+          tech: ['Python', 'R', 'SQL', 'GIS'],
+          thematic: ['Public Health', 'Environmental Health'],
+          role: ['Research']
+        },
+        {
+          title: 'Air Pollution Modelling',
+          titleLink: { url: 'https://publichealth.jhu.edu/academics/mas-in-spatial-analysis-for-public-health', text: '@JHU' },
+          url: 'https://braimbault.github.io/2020-JHU-IA/',
+          image: 'thumbnails/jhu_ia.png',
+          description: 'Final project built as part of JHU\'s Master of Spatial Analysis for Public Health, using kriging-based spatial models to estimate PM2.5 exposure across California.',
+          tech: ['R', 'GIS'],
+          thematic: ['Public Health', 'Environmental Health'],
+          role: ['Research']
+        },
+        {
+          title: 'Connecting with Sara',
+          titleLink: { url: 'https://www.psi.org/', text: '@PSI' },
+          url: 'https://www.psi.org/saras-journey-to-care/',
+          image: 'thumbnails/psi_cws.png',
+          description: 'Product owner and lead engineer of a DHIS2-integrated mobile health ecosystem, deployed in 15 countries for 2,000+ health workers and 100,000+ patients monthly. <a href="https://media.psi.org/wp-content/uploads/2020/02/31010924/Connecting-with-Sara-Brief-FINAL-Sept-2018-v2.pdf" target="_blank">Brief</a>.',
+          tech: ['JS', 'Node', 'SQL', 'NoSQL'],
+          thematic: ['Public Health', 'Reproductive Health'],
+          role: ['Project Management', 'Field Work']
+        },
+        {
+          title: 'DHIS2 New Start App',
+          titleLink: { url: 'https://www.psi.org/', text: '@PSI' },
+          url: 'https://github.com/psi-mis/lesotho',
+          image: 'thumbnails/psi_ns.png',
+          description: 'Led design, development, and field deployment of a DHIS2 app for HIV testing campaigns in Lesotho, enabling patient data collection and linkage-to-care follow-up.',
+          tech: ['JS'],
+          thematic: ['Public Health', 'Reproductive Health'],
+          role: ['Project Management', 'Field Work']
+        },
+        {
+          title: 'MSF Dashboards',
+          titleLink: { url: 'http://www.msf.org.uk/', text: '@MSF' },
+          url: 'https://msf-uk.github.io/MSF-Dashboard/ver_demos/cfg_dhmt-tonkolili/',
+          image: 'thumbnails/msf_db.png',
+          description: 'Designed, developed, and field-piloted a modular disease surveillance dashboard for MSF, covering time/place/person visualisation. Deployed in Sierra Leone and DRC. <a href="https://f1000research.com/slides/5-922" target="_blank">Slides</a>.',
+          tech: ['JS', 'GIS'],
+          thematic: ['Public Health'],
+          role: ['Field Work']
+        },
+      ];
 
-    // --------------- Filter Logic ----------------
-    const activeTech = new Set();
-    const activeThematic = new Set();
-    const activeRole = new Set();
-    let filterTriggeredOpen = false;
-    let userExpandedFilters = false;
-    const $filterChips = $('#filterChips');
-    const $filterToggle = $('#filterToggle');
+      const earlierProjects = [
+        {
+          title: 'DHIS2 Dictionary App',
+          titleLink: { url: 'https://www.msf.es/', text: '@MSF' },
+          url: 'https://github.com/msf-ocba/HMIS-Dictionary',
+          image: 'thumbnails/msf_dict.png',
+          description: 'DHIS2 app built for MSF field teams to look up health indicator definitions and metadata, reducing data entry errors across 15 countries and 60 projects.',
+          tech: ['JS'],
+          thematic: ['Public Health', 'Information Management'],
+          role: ['Field Work']
+        },
+        {
+          title: 'Mapfolios',
+          titleLink: { url: 'http://www.redcross.org.uk/', text: '@BritishRedCross' },
+          url: 'https://sheltercluster.org/myanmar-floods-2015/pages/tables-and-maps',
+          image: 'thumbnails/rc_mf.png',
+          description: 'Static map portfolios produced for the Ethiopia Red Cross Drought Emergency and the Global Shelter Cluster\'s Myanmar Floods Response.',
+          tech: ['JS', 'GIS'],
+          thematic: ['Information Management'],
+          role: ['Field Work']
+        },
+        {
+          title: 'Interactive Reports',
+          titleLink: { url: 'http://www.redcross.org.uk/', text: '@BritishRedCross' },
+          url: 'https://braimbault.github.io/dc_ERCS-DHIS/',
+          image: 'thumbnails/rc_ir.png',
+          description: 'Interactive situational reports for the Nepal and Ethiopia Red Cross, combining health surveillance data with dynamic maps and charts.',
+          tech: ['JS', 'GIS'],
+          thematic: ['Information Management']
+        },
+        {
+          title: 'Open Humanitarian Data',
+          titleLink: { url: 'https://data.humdata.org/', text: 'HDX data' },
+          url: 'https://braimbault.github.io/d3_WSS_explore/',
+          image: 'thumbnails/hdx_ohd.png',
+          description: 'Personal exploration of HDX open datasets, building interactive dashboards to visualise water, sanitation, and hygiene indicators across humanitarian contexts.',
+          tech: ['JS', 'GIS'],
+          thematic: ['Information Management']
+        },
+        {
+          title: 'Irrigation Monitoring',
+          titleLink: { url: 'https://en.ird.fr/', text: '@IRD' },
+          url: 'https://www.cesbio.cnrs.fr/la-recherche/activites/observatoires/tunisie-le-projet-merguellil/',
+          image: 'thumbnails/ird_ndvi.png',
+          description: 'Estimated irrigation water use in the Kairouan Plain, Tunisia, using high-resolution NDVI satellite time series with field calibration, as part of the SUDMED project. <a href="https://www.mdpi.com/2072-4292/7/10/13005#" target="_blank">Article</a>.',
+          tech: ['R', 'GIS'],
+          thematic: ['Hydrology'],
+          role: ['Field Work', 'Research']
+        },
+        {
+          title: 'Landslides Modelling',
+          titleLink: { url: 'https://www.brgm.fr/en/', text: '@BRGM' },
+          url: 'https://www.brgm.fr/en/reference-completed-project/safeland-mitigating-impacts-global-changes-land-movement-risks',
+          image: 'thumbnails/brgm.png',
+          description: 'Modelled hydrological triggers of landslide hazard and mapped its evolution under IPCC climate scenarios in the French Alps, contributing to the ALICE software (EU FP7 Safeland).',
+          tech: ['VBA', 'Python', 'GIS'],
+          thematic: ['Hydrology'],
+          role: ['Research']
+        },
+        {
+          title: 'Hydrological Analysis',
+          titleLink: { url: 'https://en.ird.fr/', text: '@IRD' },
+          url: 'https://hybam.obs-mip.fr/hydraccess/',
+          image: 'thumbnails/ird_adcp.png',
+          description: 'Developed modules for Hydraccess, an IRD hydrological data analysis tool, while conducting field campaigns and staff training in Chile and Peru (HyBAm project).',
+          tech: ['VBA', 'SQL'],
+          thematic: ['Hydrology'],
+          role: ['Field Work', 'Research'],
+        }
+      ];
 
-    function setFilterChipsOpen(open) {
-      if (open) { $filterChips.collapse('show'); $filterToggle.addClass('active'); }
-      else { $filterChips.collapse('hide'); $filterToggle.removeClass('active'); }
-    }
-
-    $filterToggle.on('click', function () {
-      const opening = !$filterChips.hasClass('show');
-      userExpandedFilters = opening;
-      setFilterChipsOpen(opening);
-    });
-
-    function projectMatches(card) {
-      const cardTech = $(card).data('tech') ? String($(card).data('tech')).split('|') : [];
-      const cardThematic = $(card).data('thematic') ? String($(card).data('thematic')).split('|') : [];
-      const cardRole = $(card).data('role') ? String($(card).data('role')).split('|') : [];
-      const techMatch = activeTech.size === 0 || cardTech.some(t => activeTech.has(t));
-      const thematicMatch = activeThematic.size === 0 || cardThematic.some(t => activeThematic.has(t));
-      const roleMatch = activeRole.size === 0 || cardRole.some(t => activeRole.has(t));
-      return techMatch && thematicMatch && roleMatch;
-    }
-
-    function applyFilters() {
-      $('.project-card').each(function () { $(this).toggle(projectMatches(this)); });
-      $('.badge-tech, .badge-thematic, .badge-role').each(function () {
-        $(this).toggleClass('active', activeTech.has($(this).text()) || activeThematic.has($(this).text()) || activeRole.has($(this).text()));
+      // --------------- Render Filter Bar ----------------
+      TECH_BADGES.forEach(b => {
+        $('#techFilters').append(`<button class="btn btn-sm filter-btn filter-tech mr-1 mb-1" data-filter="${b}" data-type="tech">${b}</button>`);
       });
-      const filtersActive = activeTech.size > 0 || activeThematic.size > 0 || activeRole.size > 0;
-      const anyEarlierMatches = $('#earlierProjects .project-card').toArray().some(projectMatches);
-      if (filtersActive && anyEarlierMatches) { filterTriggeredOpen = true; $collapse.collapse('show'); }
-      if (filtersActive) { setFilterChipsOpen(true); }
-      else if (!userExpandedFilters) { setFilterChipsOpen(false); }
-      $('#clearFilters').toggleClass('d-none', !filtersActive);
-    }
+      THEMATIC_BADGES.forEach(b => {
+        $('#thematicFilters').append(`<button class="btn btn-sm filter-btn filter-thematic mr-1 mb-1" data-filter="${b}" data-type="thematic">${b}</button>`);
+      });
+      ROLE_BADGES.forEach(b => {
+        $('#roleFilters').append(`<button class="btn btn-sm filter-btn filter-role mr-1 mb-1" data-filter="${b}" data-type="role">${b}</button>`);
+      });
 
-    $('#clearFilters').on('click', function () {
-      activeTech.clear();
-      activeThematic.clear();
-      activeRole.clear();
-      $('.filter-btn').removeClass('active');
-      applyFilters();
+      // --------------- Filter Logic ----------------
+      const activeTech = new Set();
+      const activeThematic = new Set();
+      const activeRole = new Set();
+      let filterTriggeredOpen = false;
+      let userExpandedFilters = false;
+      const $filterChips = $('#filterChips');
+      const $filterToggle = $('#filterToggle');
+
+      function setFilterChipsOpen(open) {
+        if (open) { $filterChips.collapse('show'); $filterToggle.addClass('active'); }
+        else { $filterChips.collapse('hide'); $filterToggle.removeClass('active'); }
+      }
+
+      $filterToggle.on('click', function () {
+        const opening = !$filterChips.hasClass('show');
+        userExpandedFilters = opening;
+        setFilterChipsOpen(opening);
+      });
+
+      function projectMatches(card) {
+        const cardTech = $(card).data('tech') ? String($(card).data('tech')).split('|') : [];
+        const cardThematic = $(card).data('thematic') ? String($(card).data('thematic')).split('|') : [];
+        const cardRole = $(card).data('role') ? String($(card).data('role')).split('|') : [];
+        const techMatch = activeTech.size === 0 || cardTech.some(t => activeTech.has(t));
+        const thematicMatch = activeThematic.size === 0 || cardThematic.some(t => activeThematic.has(t));
+        const roleMatch = activeRole.size === 0 || cardRole.some(t => activeRole.has(t));
+        return techMatch && thematicMatch && roleMatch;
+      }
+
+      function applyFilters() {
+        $('.project-card').each(function () { $(this).toggle(projectMatches(this)); });
+        $('.badge-tech, .badge-thematic, .badge-role').each(function () {
+          $(this).toggleClass('active', activeTech.has($(this).text()) || activeThematic.has($(this).text()) || activeRole.has($(this).text()));
+        });
+        const filtersActive = activeTech.size > 0 || activeThematic.size > 0 || activeRole.size > 0;
+        const anyEarlierMatches = $('#earlierProjects .project-card').toArray().some(projectMatches);
+        if (filtersActive && anyEarlierMatches) { filterTriggeredOpen = true; $collapse.collapse('show'); }
+        if (filtersActive) { setFilterChipsOpen(true); }
+        else if (!userExpandedFilters) { setFilterChipsOpen(false); }
+        $('#clearFilters').toggleClass('d-none', !filtersActive);
+      }
+
+      $('#clearFilters').on('click', function () {
+        activeTech.clear();
+        activeThematic.clear();
+        activeRole.clear();
+        $('.filter-btn').removeClass('active');
+        applyFilters();
+      });
+
+      $(document).on('click', '.badge-tech, .badge-thematic, .badge-role', function () {
+        $(`.filter-btn[data-filter="${$(this).text()}"]`).trigger('click');
+      });
+
+      $(document).on('click', '.filter-btn', function () {
+        const filter = $(this).data('filter');
+        const type = $(this).data('type');
+        const activeSet = type === 'tech' ? activeTech : type === 'thematic' ? activeThematic : activeRole;
+        if (activeSet.has(filter)) { activeSet.delete(filter); $(this).removeClass('active'); }
+        else { activeSet.add(filter); $(this).addClass('active'); }
+        applyFilters();
+      });
+
+      // --------------- Render Projects ----------------
+      const $featuredContainer = $('#featuredProjects');
+      featuredProjects.forEach(proj => $featuredContainer.append(createProjectCard(proj)));
+
+      const $earlierContainer = $('#earlierProjects');
+      earlierProjects.forEach(proj => $earlierContainer.append(createProjectCard(proj)));
+
+      // --------------- Toggle Button ----------------
+      const $btn = $('#toggleBtn');
+      const $collapse = $('#earlierWork');
+
+      $collapse.on('shown.bs.collapse', function () {
+        $btn.text('Hide earlier work').addClass('open');
+        if (!filterTriggeredOpen) { window.scrollTo(0, $btn.offset().top - 20); }
+        filterTriggeredOpen = false;
+      });
+
+      $collapse.on('hide.bs.collapse', function () {
+        $btn.text('Show earlier work').removeClass('open');
+      });
+
     });
-
-    $(document).on('click', '.badge-tech, .badge-thematic, .badge-role', function () {
-      $(`.filter-btn[data-filter="${$(this).text()}"]`).trigger('click');
-    });
-
-    $(document).on('click', '.filter-btn', function () {
-      const filter = $(this).data('filter');
-      const type = $(this).data('type');
-      const activeSet = type === 'tech' ? activeTech : type === 'thematic' ? activeThematic : activeRole;
-      if (activeSet.has(filter)) { activeSet.delete(filter); $(this).removeClass('active'); }
-      else { activeSet.add(filter); $(this).addClass('active'); }
-      applyFilters();
-    });
-
-    // --------------- Render Projects ----------------
-    const $featuredContainer = $('#featuredProjects');
-    featuredProjects.forEach(proj => $featuredContainer.append(createProjectCard(proj)));
-
-    const $earlierContainer = $('#earlierProjects');
-    earlierProjects.forEach(proj => $earlierContainer.append(createProjectCard(proj)));
-
-    // --------------- Toggle Button ----------------
-    const $btn = $('#toggleBtn');
-    const $collapse = $('#earlierWork');
-
-    $collapse.on('shown.bs.collapse', function () {
-      $btn.text('Hide earlier work').addClass('open');
-      if (!filterTriggeredOpen) { window.scrollTo(0, $btn.offset().top - 20); }
-      filterTriggeredOpen = false;
-    });
-
-    $collapse.on('hide.bs.collapse', function () {
-      $btn.text('Show earlier work').removeClass('open');
-    });
-
-  });
-</script>
+  </script>
 
 </body>
+
 </html>
