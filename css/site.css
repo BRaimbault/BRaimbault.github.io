@@ -431,7 +431,8 @@ body {
 
 /* ---- Project images ---- */
 .project-card-inner > a {
-    display: block;
+    display: flex;
+    justify-content: center;
     background: var(--bg-surface-dim);
     border-radius: 6px;
     overflow: hidden;
@@ -440,12 +441,9 @@ body {
 }
 
 .project-card-inner img {
-    width: 100%;
-    max-width: 220px;
+    width: 220px;
     height: 220px;
     object-fit: contain;
-    display: block;
-    margin: 0 auto;
     padding: 10px;
 }
 
@@ -580,7 +578,28 @@ body {
     .header-links { flex-wrap: wrap; gap: 8px; }
     .header-links .btn-outline { margin-right: 0 !important; }
 
-    .card-description { height: auto; max-height: 10.5em; }
+    /* Theme toggle: pull in from edge, enlarge touch target */
+    #themeToggle {
+        right: 15px;
+        top: 14px;
+        width: 42px;
+        height: 42px;
+    }
 
-    .project-card-inner img { height: 180px; }
+    /* Single-column cards: drop fixed heights, let content flow naturally */
+    .project-card h5       { height: auto; margin-bottom: 6px; }
+    .card-description      { height: auto; overflow: visible; }
+    .card-badges           { height: auto; }
+
+    .project-card-inner img { width: 180px; height: 180px; }
+
+    /* Bump small text for readability */
+    .filter-btn            { font-size: .85em; }
+    .badge-tech,
+    .badge-thematic,
+    .badge-role            { font-size: .78em; }
+
+    /* Sticky header: hide role text to guarantee single line */
+    .sticky-sep,
+    .sticky-role { display: none; }
 }

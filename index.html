@@ -59,7 +59,7 @@
 
     <!-- Toggle Button -->
     <div class="row justify-content-center spacer spacer-down">
-      <a id="toggleBtn" class="btn spacer" data-toggle="collapse" href="#earlierWork">
+      <a id="toggleBtn" class="btn" data-toggle="collapse" href="#earlierWork">
         Show earlier work
       </a>
     </div>
@@ -76,8 +76,9 @@
 
     // --------------- Sticky Header ----------------
     const $stickyHeader = $('#stickyHeader');
+    const stickyThreshold = $('.site-header').outerHeight() || 120;
     $(window).on('scroll', function () {
-      $stickyHeader.toggleClass('visible', $(this).scrollTop() > $('.site-header').outerHeight(true));
+      $stickyHeader.toggleClass('visible', $(this).scrollTop() > stickyThreshold);
     });
 
     // --------------- Theme Toggle ----------------
