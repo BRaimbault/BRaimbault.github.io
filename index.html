@@ -5,6 +5,7 @@
   <title>BRaimbault</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -83,15 +84,36 @@
 
     // --------------- Theme Toggle ----------------
     const $html = $('html');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) $html.attr('data-theme', savedTheme);
+
+    // Only apply saved theme if it overrides the system preference; otherwise clear it
+    if (savedTheme) {
+      const systemTheme = systemDark.matches ? 'dark' : 'light';
+      if (savedTheme !== systemTheme) {
+        $html.attr('data-theme', savedTheme);
+      } else {
+        localStorage.removeItem('theme');
+      }
+    }
 
     $('#themeToggle').on('click', function () {
       const current = $html.attr('data-theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        (systemDark.matches ? 'dark' : 'light');
       const next = current === 'dark' ? 'light' : 'dark';
       $html.attr('data-theme', next);
       localStorage.setItem('theme', next);
+    });
+
+    // If system preference changes (e.g. phone auto dark mode at sunset),
+    // clear any manual override that now matches it
+    systemDark.addEventListener('change', function (e) {
+      const stored = localStorage.getItem('theme');
+      const newSystem = e.matches ? 'dark' : 'light';
+      if (stored === newSystem) {
+        localStorage.removeItem('theme');
+        $html.removeAttr('data-theme');
+      }
     });
 
     const TECH_BADGES = ['GIS', 'JS', 'Python', 'R', 'VBA', 'Node', 'SQL', 'NoSQL'];
@@ -107,12 +129,12 @@
         <div class="col-sm-3 spacer project-card" data-tech="${techAttr}" data-thematic="${thematicAttr}" data-role="${roleAttr}">
           <div class="project-card-inner">
             <h5 class="text-center">${project.title}</h5>
-            <div class="text-center">
+            <div class="card-org text-center">
               ${project.titleLink ? `<a href="${project.titleLink.url}" target="_blank" class="btn btn-sm btn-dark">${project.titleLink.text}</a>` : ''}
             </div>
 
             ${project.url ? `
-              <a href="${project.url}" target="_blank" class="stretched-link">
+              <a href="${project.url}" target="_blank" class="card-image stretched-link">
                 ${project.image ? `<img src="${project.image}" alt="${project.title}" />` : ''}
               </a>` : ''}
 

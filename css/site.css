@@ -430,7 +430,7 @@ body {
 }
 
 /* ---- Project images ---- */
-.project-card-inner > a {
+.card-image {
     display: flex;
     justify-content: center;
     background: var(--bg-surface-dim);
@@ -518,6 +518,7 @@ body {
 /* ---- Elements above the stretched-link overlay ---- */
 .card-badges,
 .card-description a,
+.card-org,
 .project-card-inner .btn-dark { position: relative; z-index: 2; }
 
 /* ---- Org link button ---- */
@@ -570,6 +571,10 @@ body {
     .project-card { flex: 0 0 50%; max-width: 50%; }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+    .project-card { flex: 0 0 33.333%; max-width: 33.333%; }
+}
+
 @media (max-width: 575px) {
     .site-header { padding: 36px 0 28px; }
 
@@ -599,7 +604,63 @@ body {
     .badge-thematic,
     .badge-role            { font-size: .78em; }
 
-    /* Sticky header: hide role text to guarantee single line */
-    .sticky-sep,
-    .sticky-role { display: none; }
+    /* Sticky header: name never shrinks, role truncates with ellipsis */
+    .sticky-name { flex-shrink: 0; }
+}
+
+/* ---- Phone landscape: single-column, image-left layout ---- */
+@media (max-width: 850px) and (orientation: landscape) and (max-height: 500px) {
+    .project-card { flex: 0 0 100%; max-width: 100%; }
+
+    .project-card-inner {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        column-gap: 16px;
+        align-items: start;
+    }
+
+    .card-image {
+        grid-column: 1;
+        grid-row: 1 / 5;
+        margin: 0;
+        align-self: stretch;
+    }
+
+    .project-card-inner img {
+        width: 140px;
+        height: 100%;
+        min-height: 100px;
+        max-height: 180px;
+    }
+
+    .project-card-inner h5 {
+        grid-column: 2;
+        grid-row: 1;
+        height: auto;
+        text-align: left;
+        margin-bottom: 4px;
+    }
+
+    .card-org {
+        grid-column: 2;
+        grid-row: 2;
+        text-align: left;
+        margin-bottom: 4px;
+    }
+
+    .card-description {
+        grid-column: 2;
+        grid-row: 3;
+        height: auto;
+        max-height: 5em;
+        overflow: hidden;
+        margin-bottom: 6px;
+    }
+
+    .card-badges {
+        grid-column: 2;
+        grid-row: 4;
+        height: auto;
+    }
 }
