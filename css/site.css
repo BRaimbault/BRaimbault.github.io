@@ -630,7 +630,8 @@ body {
     .header-links { flex-wrap: nowrap; gap: 6px; }
     .header-links .btn-outline { margin-right: 0 !important; padding: 5px 10px; font-size: 0.75rem; }
 
-    /* Theme toggle: pull in from edge, enlarge touch target */
+    /* Theme toggle + back to top: pull in from edge */
+    #backToTop { right: 15px; }
     #themeToggle {
         right: 15px;
         top: 14px;
