@@ -14,6 +14,8 @@
 
 <body>
 
+  <button id="backToTop" aria-label="Back to top">↑</button>
+
   <div id="stickyHeader">
     <div class="sticky-inner">
       <span class="sticky-name">Bruno Raimbault</span>
@@ -79,8 +81,14 @@
       // --------------- Sticky Header ----------------
       const $stickyHeader = $('#stickyHeader');
       const stickyThreshold = $('.site-header').outerHeight() || 120;
+      const $backToTop = $('#backToTop');
       $(window).on('scroll', function () {
-        $stickyHeader.toggleClass('visible', $(this).scrollTop() > stickyThreshold);
+        const scrolled = $(this).scrollTop() > stickyThreshold;
+        $stickyHeader.toggleClass('visible', scrolled);
+        $backToTop.toggleClass('visible', scrolled);
+      });
+      $backToTop.on('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
       // --------------- Theme Toggle ----------------
