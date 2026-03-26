@@ -14,7 +14,15 @@
 
 <body>
 
-  <button id="backToTop" aria-label="Back to top">↑</button>
+  <div id="backToTopWrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <button id="backToTop" aria-label="Back to top">↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="stickyHeader">
     <div class="sticky-inner">
@@ -90,6 +98,7 @@
       $backToTop.on('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
 
       // --------------- Theme Toggle ----------------
       const $html = $('html');

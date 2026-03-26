@@ -257,13 +257,21 @@ body {
 }
 
 /* ---- Back to top button ---- */
-#backToTop {
+#backToTopWrap {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 0;
+    right: 0;
     z-index: 99;
-    width: 40px;
-    height: 40px;
+    pointer-events: none;
+}
+
+#backToTop {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 1.5px solid var(--border-hover);
     background: var(--bg-surface);
@@ -286,6 +294,7 @@ body {
     border-color: var(--accent);
     color: var(--accent);
 }
+
 
 /* ---- Theme toggle button ---- */
 #themeToggle {
